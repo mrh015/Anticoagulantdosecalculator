@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .navbar {
+            background-color: #343a40 !important;
+        }
+        .navbar-brand {
+            color: #ffffff !important;
+        }
+        .calculator {
+            max-width: 500px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .horizontal-group .form-check {
+            margin-right: 20px;
+        }
+        .btn-calculate {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-calculate:hover {
+            background-color: #0056b3;
+        }
+        .message-box {
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+        .footer {
+            background-color: #343a40;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* Container for flexboxes */
+        section {
+        display: -webkit-flex;
+        display: flex;
+        /* width: 100%;  */
+        }
+
+        #resultbox {
+        display: flex;
+            justify-content: center; /* Horizontally center the children */
+            /*  align-items: center;  Vertically center the children */
+        }
+        .warning {
+            color: red;
+        }
+
+        /* Apply background color to alternate paragraphs */
+        p:nth-child(even) {
+            /* background-color: lightblue; */
+            background-color: #B0E0E6;
+        }
+
+        .first-word {
+            font-weight: bold;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+    
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"><h1> Anticoagulant Dose Calculator</h1></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav> -->
+    <div class="container calculator-container">
+    <div class="container">
+        <div class="calculator">
+        
+            <form id="healthForm" >
+                <div class="form-group d-flex align-items-center">
+                    <label for="medication" class="first-word">Calculator Type:</label>
+                    <div class="col-sm-6">
+                    <select class="form-control" id="medication" required>
+                        <option value=0>Calculator Type</option>
+                        <option value="doac">DOAC</option>
+                        <option value="Lovenox">Lovenox</option>
+                        <option value="Pediatric">Pediatric</option>
+                       
+                       
+                    </select>
+                    </div>
+                </div>
+
+                    <div class="form-group d-flex align-items-center">
+                    <label for="age" class="first-word">Age:</label>
+                    <div class="col-sm-4">
+                        <input type="number" class="form-control" id="age" min="0" max="120" required>
+
+                    </div>
+                   
+                </div>
+
+                <div class="form-group d-flex align-items-center">
+                    <label class="first-word">Gender:</label><br>
+                    <div class="col-sm-4">
+                    <div class="form-check form-check-inline horizontal-group">
+                        <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
+                        <label class="form-check-label" for="male">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline horizontal-group">
+                        <input class="form-check-input" type="radio" name="gender" id="female" value="Female" required>
+                        <label class="form-check-label" for="female">Female</label>
+                    </div>
+                    </div>
+
+                </div>
+
+               
+                
+
+                <div class="form-group d-flex align-items-center">
+                            
+                      <label for="SCr" class="first-word">Serum Creatinine (SCr):</label>
+                      <div class="col-sm-4">
+                        <input type="number" step="0.01" class="form-control" id="SCr" min="0" max="3" required>
+                      </div>
+                    </div>
+               
+            
+                <div class="form-group d-flex align-items-center">
+                    <label class="first-word">Weight:</label><br>
+                    <div class="col-sm-4">
+                    <input type="number" step="0.1" class="form-control mr-2" id="weight" min="0" max="300" required>
+                    </div>
+                    <div class="col-sm-4">
+                    <select class="form-control" id="weightType">
+                        <option value="kg">kg</option>
+                        <option value="lbs">lbs</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="form-group d-flex align-items-center">
+                    <label class="first-word">Height:</label><br>
+                    <div class="col-sm-4">
+                    <input type="number" step="0.1" class="form-control mr-2" id="height" min="0" max="300" required>
+                    </div>
+                    <div class="col-sm-4">
+                    <select class="form-control" id="heightType">
+                        <option value=1>cm</option>
+                        <option value=2>inches</option>
+                    </select>
+                </div>
+                </div>
+           
+                <div class="d-flex justify-content-center">
+                    <div class="col-sm-4">
+                <button type="submit" class="btn btn-calculate btn-block">Calculate</button>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+    <div >
+       <section id="resultbox">
+      
+       </section>
+    </div>
+    </div>
+
+
+    <footer class="footer">
+        <div class="container">
+            &copy; 2024 Adebayo Ajifolokun. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS (Optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // JavaScript for handling form submission and calculation
+        document.getElementById('healthForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            calculateHealth();
+        }); 
+
+   
+
+
+        function calculateHealth() {
+
+            var section = document.getElementById("resultbox");
+            while (section.firstChild) {
+                    section.removeChild(section.firstChild);
+                }
+
+            // Remove inline styles
+            // section.style.display = "";
+
+            // document.getElementById("box").innerHTML = "";
+            // document.getElementById("param").innerHTML = "";
+
+            var age = parseFloat(document.getElementById('age').value);
+            var gender = document.querySelector('input[name="gender"]:checked').value;
+            var SCr = parseFloat(document.getElementById('SCr').value);
+            var weight = parseFloat(document.getElementById('weight').value);
+            var weightType = document.getElementById('weightType').value;
+            var height = parseFloat(document.getElementById('height').value);
+            var heightType = parseInt( document.getElementById('heightType').value);
+            var medication = document.getElementById('medication').value;
+
+            // Perform calculation here, you can modify this part as per your calculation logic
+            // var result = 'Age: ' + age + '\n years, Gender: ' + gender + ', SCr: ' + SCr + ', Weight: ' + weight + ' ' + weightType + ', Height: ' + height + ' ' + heightType + ', Medication: ' + medication;
+            // var result = '\nAge: ' + age + ' years, \nGender: ' + gender + ', \nSCr: ' + SCr + ', \nWeight: ' + weight + ' ' + weightType + ', \nHeight: ' + height + ' ' + heightType + ', \nMedication: ' + medication;
+
+         
+
+
+
+            var CrCl = 0;
+          
+            var weight_C = 0;
+            height = heightType === 1 ? height:height * 2.54;
+            var height_60 =  height - 152.4 > 0 ? height - 152.4 : 0;
+            var sex = gender === "Female" ? 0.85 : 1;
+          
+
+                 
+         
+            var ideal_weight = gender === "Female" ? (weight/weight) * ( 45.5 + (0.9062 * height_60)) :  (weight/weight) * (50 + (0.9062 * height_60)) || 0;
+            
+
+
+            weight = weightType === "kg" ? weight : weight / 2.2;
+           
+            var weight_A =  weight === 0 ? 0: ideal_weight + 0.4 * (weight - ideal_weight);
+            var SCr_C = SCr;
+             
+
+ 
+            if (medication === "Pediatric") {
+                SCr_C = SCr;
+                weight_C = weight;
+                CrCl = (0.413 * height) / SCr|| 0;
+
+                // document.getElementById("box").innerHTML = "";
+                var param = document.createElement("div");
+                param.id = "param";
+                param.classList.add("message-box", "col-sm-6");
+                document.getElementById('resultbox').appendChild(param);
+                
+                var header_param = document.createElement("div");
+                var age_param = document.createElement("p");
+                var gender_param = document.createElement("p");
+                var scr_param = document.createElement("p");
+                var height_param = document.createElement("p");
+                var crcl_param = document.createElement("p");
+                var act_weight = document.createElement("p");
+                header_param.classList.add("alert", "alert-success");
+
+
+                header_param.textContent = "Patient Parameters";
+                // age_param.textContent = '<span class="first-word">' + "Age: " +  '</span>' + age;
+                age_param.innerHTML = '<span class="first-word">' + "Age: " +  '</span>' + age;
+                gender_param.innerHTML = '<span class="first-word">' + "Gender: " +  '</span>'  + gender;
+                scr_param.innerHTML = '<span class="first-word">' + "SCr: " +  '</span>' + SCr_C;
+                crcl_param.innerHTML = '<span class="first-word">' + "CrCl: " +  '</span>' + CrCl.toFixed(2) + "ml/min";
+                act_weight.innerHTML = '<span class="first-word">' + "Actual Body Weight: " +  '</span>' + weight.toFixed(2) + "kg";
+                height_param.innerHTML = '<span class="first-word">' + "height: " +  '</span>' + height + "cm";
+
+                document.getElementById('param').appendChild(header_param);
+                document.getElementById('param').appendChild(crcl_param); 
+                document.getElementById('param').appendChild(age_param);
+                document.getElementById('param').appendChild(gender_param);
+                document.getElementById('param').appendChild(scr_param);
+                document.getElementById('param').appendChild(act_weight);
+                document.getElementById('param').appendChild(height_param);
+
+
+
+
+
+                
+            
+            } else  if (medication === "Lovenox") {
+
+                if ((weight / ideal_weight <= 1.25) && ( weight / ideal_weight > 1.0)) {
+                weight_C = ideal_weight;
+                } else if (weight / ideal_weight >= 1.25) {
+                    weight_C =  weight_A;
+                } else {
+                    weight_C = weight;
+                }
+
+                if (SCr < 1.0 && age > 65.0) {
+                    SCr_C = 1;
+                    CrCl = ((140 - age) * weight_C * sex) /( 72 * SCr_C) || 0;
+                } else {
+                    SCr_C = SCr;
+                    CrCl =  ((140 - age) * weight_C * sex) / (72 * SCr_C) || 0;
+                }
+
+                var bid_dose = CrCl > 30 ? String(weight.toFixed(0)) + "mg BID" : "See Renal Dosing";
+                var qd_dose = CrCl > 30 ?  String(( 1.5 * weight).toFixed(0)) + "mg daily" : "See Renal Dosing";
+
+                renal_dose = CrCl <= 30 ?  String( weight.toFixed(0)) + "mg daily" : "Not Applicable";
+
+     
+
+
+
+
+                var param = document.createElement("div");
+                param.id = "param";
+                param.classList.add("message-box");
+                document.getElementById('resultbox').appendChild(param);
+
+                var box = document.createElement("div");
+                box.id = "box";
+                box.classList.add("message-box");
+                document.getElementById('resultbox').appendChild(box);
+
+
+
+
+                var header_param = document.createElement("div");
+                var age_param = document.createElement("p");
+                var gender_param = document.createElement("p");
+                var scr_param = document.createElement("p");
+                var weight_param = document.createElement("p");
+                var height_param = document.createElement("p");
+                var crcl_param = document.createElement("p");
+                var act_weight = document.createElement("p");
+                var id_weight = document.createElement("p");
+                var adj_weight = document.createElement("p");
+                header_param.classList.add("alert", "alert-success");
+
+
+                header_param.textContent = "Patient Parameters";
+                age_param.textContent = "Age: " + age;
+                gender_param.textContent = "Gender: " + gender;
+                scr_param.textContent = "SCr Used: " + SCr_C;
+                crcl_param.textContent = "CrCl: " + CrCl.toFixed(2) + "ml/min";
+                weight_param.textContent = "Weight Used: " + weight_C.toFixed(2) + "kg";
+                act_weight.textContent = "Actual Body Weight: " + weight.toFixed(2) + "kg";
+                id_weight.textContent = "Ideal Body Weight: " + ideal_weight.toFixed(2) + "kg";
+                adj_weight.textContent = "Adjusted Body Weight: " + weight_A.toFixed(2) + "kg";
+                height_param.textContent = "Height: " + height + "cm";
+
+                document.getElementById('param').appendChild(header_param);
+                document.getElementById('param').appendChild(crcl_param); 
+                document.getElementById('param').appendChild(age_param);
+                document.getElementById('param').appendChild(gender_param);
+                document.getElementById('param').appendChild(scr_param);
+                document.getElementById('param').appendChild(weight_param);
+                document.getElementById('param').appendChild(act_weight);
+                document.getElementById('param').appendChild(id_weight);
+                document.getElementById('param').appendChild(adj_weight);
+                document.getElementById('param').appendChild(height_param);
+
+
+
+                var bid_dosing = document.createElement("p");
+                var qd_dosing = document.createElement("p");
+                var renal_dosing = document.createElement("p");
+                var header_dosing = document.createElement("div");
+                header_dosing.classList.add("alert", "alert-success");
+                // header_dosing.id ="header" 
+                
+
+                header_dosing.textContent = "Suggested Lovenox Treatment Dose";
+                bid_dosing.textContent =  "BID Dosing: " + bid_dose;
+                qd_dosing.textContent =  "Once Daily Dosing: " + qd_dose;
+                renal_dosing.textContent =  "Renal Dosing: " + renal_dose;
+
+                document.getElementById('box').appendChild(header_dosing);
+                document.getElementById('box').appendChild(bid_dosing);
+                document.getElementById('box').appendChild(qd_dosing);
+                document.getElementById('box').appendChild(renal_dosing);
+               
+
+               
+            } else {
+
+                if (SCr < 1.0 && age > 65.0) {
+                    SCr_C = 1;
+                    CrCl = ((140 - age) * weight * sex) /( 72 * SCr_C) || 0;
+                } else {
+                    SCr_C = SCr;
+                    CrCl =  ((140 - age) * weight * sex) / (72 * SCr_C) || 0;
+                }
+
+                weight_C = weight;
+
+
+                var pradaxa_afib = "";
+                if (CrCl < 15){pradaxa_afib = 'NOT RECOMMENDED';}
+                else if(CrCl >= 30) {pradaxa_afib = "75 mg twice daily";}
+                else {pradaxa_afib =  "150 mg twice daily";}
+
+                var pradaxa_vte = CrCl <=30 ? "Not Recommended" : "150 mg twice daily after LMWH for at least 5 days";
+                var pradaxa_prophylaxis_post_hip_replacement = "110mg orally 1 to 4 hours after surgery and after hemostasis is achieved, then 220mg orally once daily for 28 to 35 days. If not initiated on the day of surgery, after hemostasis is achieved, initiate treatment with 220mg once daily.";
+
+                var eliquis_afib = "";
+                if (SCr_C === 0){eliquis_afib = 'NOT RECOMMENDED';}
+                else if(weight <= 60 && (SCr_C === 1.5 || age === 80)) {eliquis_afib = "2.5";}
+                else {eliquis_afib =  "150 mg twice daily";}
+
+                var eliquis_vte = "10 mg BID x 7 days, then 5 mg BID. May use 2.5 mg BID as maintenance after 6 months";
+
+
+                
+                var xarelto_afib = "";
+                if (CrCl < 15){xarelto_afib = 'NOT RECOMMENDED';}
+                else if(CrCl> 50) {xarelto_afib = "20mg daily with food";}
+                else {xarelto_afib =  "15mg daily with food";}
+
+                var xarelto_vte = CrCl > 15 ? "15mg bid x21 days followed by 20mg qday (with food)" : "Avoid use ";
+
+                var savaysa_afib = "";
+                if (CrCl <= 95 && CrCl > 50 ){savaysa_afib = "60mg once daily (DO NOT USE IF CrCL > 95 ml/min)";}
+                else if(CrCl <= 50 && CrCl >= 15 ) {savaysa_afib = "30mg once daily (DO NOT USE IF CrCL > 95 ml/min)";}
+                else {savaysa_afib =  "NOT RECOMMENDED";}
+
+
+
+
+                var savaysa_vte = "";
+                if (CrCl < 95 && CrCl > 50 && weight <= 60){savaysa_vte = "30mg once daily (DO NOT USE IF CrCL > 95 ml/min)";}
+                else if(CrCl <= 95 && CrCl >= 50 && weight > 60) {savaysa_vte = "60mg once daily (DO NOT USE IF CrCL > 95 ml/min)";}
+                else if(CrCl <= 50 && CrCl >= 15 ) {savaysa_vte = "30mg once daily (DO NOT USE IF CrCL > 95 ml/min)";}
+                else {savaysa_vte =  "NOT RECOMMENDED";}
+
+                var doac_warning = "Dose suggestion takes weight/age restrictions as well as renal function into account. Drug-drug interactions may alter the treatment dose recommendation. Suggested dosing is intended for maintenance treatment dose for atrial fibrillation or VTE only. Patients with BMI>40 kg/m2, or weight >120 kg should be evaluated closely. DOACs have not been well-studied in patients with CrCL <30 ml/min and should be carefully considered prior to use. In some cases, renal dosing may be used in patients who have CrCL> 30 ml/min. Dosing may change due to therapy indication. Please refer to standardized drug references (i.e., Lexi-Comp, Micromedex) for detailed information. Providers are expected to use clinical judgment in considering all patient variables to determine if a more conservative dose is necessary.";
+
+
+                
+     
+
+
+
+
+                var param = document.createElement("div");
+                param.id = "param";
+                param.classList.add("message-box");
+                document.getElementById('resultbox').appendChild(param);
+
+                var box = document.createElement("div");
+                box.id = "box";
+                box.classList.add("message-box");
+                document.getElementById('resultbox').appendChild(box);
+
+
+                var warn = document.createElement("div");
+                warn.id = "warn";
+                warn.classList.add("message-box");
+                document.getElementById('resultbox').appendChild(warn);
+
+
+                var header_dosing = document.createElement("div");
+                header_dosing.classList.add("alert", "alert-success");
+                header_dosing.textContent = "Suggested DOAC Treatment Dose";
+                document.getElementById('box').appendChild(header_dosing);
+
+
+                var header_warning = document.createElement("div");
+                header_warning.classList.add("alert", "alert-success","warning");
+                header_warning.textContent = "Warning";
+                document.getElementById('warn').appendChild(header_warning);
+
+                var disclaimer = document.createElement("p");
+                disclaimer.textContent = doac_warning;
+                document.getElementById('warn').appendChild(disclaimer);
+            
+
+                
+             
+
+
+
+                var header_param = document.createElement("div");
+                var age_param = document.createElement("p");
+                var gender_param = document.createElement("p");
+                var scr_param = document.createElement("p");
+                var weight_param = document.createElement("p");
+                var height_param = document.createElement("p");
+                var crcl_param = document.createElement("p");
+                var act_weight = document.createElement("p");
+                header_param.classList.add("alert", "alert-success");
+
+
+                header_param.textContent = "Patient Parameters";
+                age_param.textContent = "Age: " + age;
+                gender_param.textContent = "Gender: " + gender;
+                scr_param.textContent = "SCr Used: " + SCr_C;
+                crcl_param.textContent = "CrCl: " + CrCl.toFixed(2) + "ml/min";
+                weight_param.textContent = "Weight Used: " + weight_C.toFixed(2) + "kg";
+                act_weight.textContent = "Actual Body Weight: " + weight.toFixed(2) + "kg";
+                height_param.textContent = "Height: " + height + "cm";
+
+                document.getElementById('param').appendChild(header_param);
+                document.getElementById('param').appendChild(crcl_param); 
+                document.getElementById('param').appendChild(age_param);
+                document.getElementById('param').appendChild(gender_param);
+                document.getElementById('param').appendChild(scr_param);
+                document.getElementById('param').appendChild(weight_param);
+                document.getElementById('param').appendChild(act_weight);
+                document.getElementById('param').appendChild(height_param);
+
+
+
+                var pradaxa_afib_dosing = document.createElement("p");
+                var pradaxa_vte_dosing = document.createElement("p");
+                var pradaxa_prophylaxis_dosing = document.createElement("p");
+           
+                var eliquis_afib_dosing = document.createElement("p");
+                var eliquis_vte_dosing = document.createElement("p");
+                var xarelto_afib_dosing = document.createElement("p");
+                var xarelto_vte_dosing = document.createElement("p");
+                var savaysa_afib_dosing = document.createElement("p");
+                var savaysa_vte_dosing = document.createElement("p");
+               
+                // header_dosing.id ="header" 
+                
+
+               
+                pradaxa_afib_dosing.textContent = "Pradaxa(AFIB): " + pradaxa_afib;
+                pradaxa_vte_dosing.textContent = "Pradaxa(VTE): " + pradaxa_vte;
+                pradaxa_prophylaxis_dosing.textContent = "Pradaxa (prophylaxis) (s/p Hip replacement): " + pradaxa_prophylaxis_post_hip_replacement;
+                eliquis_afib_dosing.textContent = "Eliquis(AFIB): " + eliquis_afib;
+                eliquis_vte_dosing.textContent = "Eliquis(VTE): " + eliquis_vte;
+                xarelto_afib_dosing.textContent = "Xarelto(AFIB): " + xarelto_afib;
+                xarelto_vte_dosing.textContent = "Xarelto(VTE): "  + xarelto_vte;
+                savaysa_afib_dosing.textContent = "Savaysa(AFIB): "  + savaysa_afib;
+                savaysa_vte_dosing.textContent = "Savaysa(VTE): "  + savaysa_vte;
+
+
+             
+                document.getElementById('box').appendChild(pradaxa_afib_dosing);
+                document.getElementById('box').appendChild(pradaxa_vte_dosing);
+                document.getElementById('box').appendChild(pradaxa_prophylaxis_dosing);
+                document.getElementById('box').appendChild(eliquis_afib_dosing);
+                document.getElementById('box').appendChild(eliquis_vte_dosing);
+                document.getElementById('box').appendChild(xarelto_afib_dosing);
+                document.getElementById('box').appendChild(xarelto_vte_dosing);
+                document.getElementById('box').appendChild(savaysa_afib_dosing);
+                document.getElementById('box').appendChild(savaysa_vte_dosing);
+                
+
+                
+
+
+              
+               
+                
+               
+
+            }
+
+
+
+            var result = `
+                            Age: ${age} years,
+                            Gender: ${gender},
+                            SCr Used: ${SCr_C},
+                            Weight Used: ${weight_C} kg,
+                            Height: ${height} cm,
+                            Medication: ${medication},
+                            CrCl: ${CrCl} ml/min
+                            `;
+
+
+            // Display the result
+            // document.getElementById('result').innerHTML = '<div class="alert alert-success">' + result + '</div>';
+            // document.getElementById('result2').innerHTML = '<div class="alert alert-success">' + bid_dosing + '</div>';
+            // document.getElementById('result2').innerText = bid_dosing;
+
+           
+        }
+    </script>
+</body>
+</html>
